@@ -35,6 +35,47 @@
     return out;
   }
 
+  /* Small, auditable query expansion for common procurement abbreviations.
+     This helps with catalogue metadata that spells out a material/product name
+     while a buyer uses its trade or grade shorthand. It is query-time only, so
+     the source catalogue and its terms are not altered. */
+  function expandQuery(text) {
+    return String(text == null ? '' : text)
+      .replace(/\b(?:stainless\s+steel|stainless|s\.?\s*s\.?|aisi)\s*(?:grade\s*)?[- ]?\d{3}\b/gi, 'stainless steel')
+      .replace(/\bfe\s*[- ]?500\s*d\b/gi, 'high strength deformed steel bars')
+      .replace(/\bfe\s*[- ]?500\b/gi, 'high strength deformed steel bars')
+      .replace(/\bopc\s*(?:33|43|53)?\b/gi, 'ordinary portland cement')
+      .replace(/\bppc\b/gi, 'portland pozzolana cement')
+      .replace(/\brcc\b/gi, 'reinforced cement concrete')
+      .replace(/\bhdpe\b/gi, 'high density polyethylene')
+      .replace(/\bgi(?=\s+(?:sheet|sheets|pipe|pipes|steel|iron))\b/gi, 'galvanized iron');
+  }
+
+  function queryTerms(query, stopwords) {
+    return [...new Set(tokenize(expandQuery(query), stopwords))];
+  }
+
+  function identifierKey(value) {
+    return String(value == null ? '' : value).toUpperCase().replace(/[^A-Z0-9]/g, '');
+  }
+
+  function identifierQuery(value) {
+    return String(value || '').trim().match(/^((?:(?:IS(?:\s*\/\s*(?:ISO|IEC|IEEE))?)|ISO|IEC|SP)\s*\d+[A-Z]?(?:\s*\([^)]*\))?(?:\s*:\s*\d{4})?)/i);
+  }
+
+  function addIdentifierRows(map, id, position) {
+    const value = String(id || '');
+    const keys = new Set([
+      identifierKey(value),
+      identifierKey(value.replace(/\s*:\s*\d{4}\s*$/, '')),
+    ]);
+    for (const key of keys) {
+      if (!key) continue;
+      if (!map.has(key)) map.set(key, []);
+      map.get(key).push(position);
+    }
+  }
+
   /* BIS identifier shapes: prefix, base number, part label, edition year. */
   const NUMBER_RE = /^([A-Z]{2,12}(?:[ ]*\/[ ]*[A-Z]{2,12})*)[ .-]*(\d{1,9}[A-Z]?)([\s\S]*)$/i;
   const PART_RE = /\(\s*([^()]*?)\s*\)/;
@@ -166,6 +207,10 @@
       return position === undefined ? '' : text(row[position]);
     };
     const stopwords = new Set(index.stopwords || DEFAULT_STOPWORDS);
+    const identifierRows = new Map();
+    rows.forEach((row, position) => {
+      addIdentifierRows(identifierRows, cell(row, 'id'), position);
+    });
     const postings = new Map();
     for (const term of Object.keys(index.postings || {})) {
       postings.set(term, Int32Array.from(index.postings[term]));
@@ -250,7 +295,16 @@
        `limit` rows only; allied records are pulled in by related(). */
     function search(query, limit) {
       const wanted = limit || 5;
-      const terms = [...new Set(tokenize(query, stopwords))];
+      const identifier = identifierQuery(query);
+      if (identifier) {
+        const exactRows = identifierRows.get(identifierKey(identifier[1])) || [];
+        if (exactRows.length) return exactRows.slice(0, wanted).map((row) => {
+          const record = view(row, ['standard number']);
+          record.score = 1;
+          return record;
+        });
+      }
+      const terms = queryTerms(identifier ? String(query).replace(identifier[1], ' ') : query, stopwords);
       if (!terms.length) return [];
       const scores = new Map();
       const matches = new Map();
@@ -327,7 +381,12 @@
     const stopwords = new Set(opts.stopwords || DEFAULT_STOPWORDS);
     const list = (rows || []).map(normalizeRow);
     const byId = new Map();
-    list.forEach((item, position) => { if (item.id) byId.set(item.id.toLowerCase(), position); });
+    const identifierRows = new Map();
+    list.forEach((item, position) => {
+      if (!item.id) return;
+      byId.set(item.id.toLowerCase(), position);
+      addIdentifierRows(identifierRows, item.id, position);
+    });
     const edgeMap = new Map();
     for (const edge of edges || []) {
       const source = text(edge.source_is || edge.s);
@@ -360,7 +419,16 @@
 
     function search(query, limit) {
       const wanted = limit || 5;
-      const terms = [...new Set(tokenize(query, stopwords))];
+      const identifier = identifierQuery(query);
+      if (identifier) {
+        const exactRows = identifierRows.get(identifierKey(identifier[1])) || [];
+        if (exactRows.length) return exactRows.slice(0, wanted).map((position) => {
+          const record = view(position, ['standard number']);
+          record.score = 1;
+          return record;
+        });
+      }
+      const terms = queryTerms(identifier ? String(query).replace(identifier[1], ' ') : query, stopwords);
       if (!terms.length) return [];
       const scored = [];
       for (let position = 0; position < list.length; position++) {
