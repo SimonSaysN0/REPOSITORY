@@ -63,3 +63,69 @@ footer{border-color:#dde4f0;color:#8596ae}
 button:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid rgba(45,111,240,.45);outline-offset:2px}
 @media(max-width:1050px){.main{padding-left:28px;padding-right:28px}.left-column{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:720px){.main{padding-left:16px;padding-right:16px}.input-panel{padding:20px}.requirements-panel,.result-panel,.related-panel{padding:16px}}
+
+/* Dashboard layout and branding aligned to the supplied MAAनक AI reference. */
+.rail{width:256px;background:#060c1d;border:0;border-right:1px solid #172238;padding:20px 9px 12px;color:#fff}
+.brand{display:block;padding:0 11px;margin:0 0 25px;color:#fff}
+.brand-name{display:block;color:#fff;font-family:Inter,'Noto Sans Devanagari',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.8px;line-height:1.25}
+.brand-name span{font-family:Inter,sans-serif;font-size:14px;font-weight:600;color:#8c9cb9;letter-spacing:0}
+.brand-tagline{display:block;margin-top:6px;color:#64738e;font-size:10px;letter-spacing:.01em}
+.rail-label{padding:0 13px 9px;color:#53617b;font-size:9px}
+.nav-item{gap:12px;margin:2px 0;padding:10px 12px;color:#7d8ba4;font-size:12px;border-radius:8px;min-height:36px}
+.nav-icon{width:16px;color:#687791;font-size:16px}
+.nav-item.active{background:#202b40;color:#fff}
+.nav-item.active .nav-icon{color:#fff}
+.nav-count{background:#263f66;color:#e8eef8;font-size:10px}
+.future-nav{cursor:pointer}
+.rail-divider{height:1px;background:#172238;margin:11px 3px 10px}
+.rail-bottom{border-top:1px solid #172238;margin: auto -9px 0;padding:10px 9px 0}
+.help-nav{margin-bottom:5px}
+.profile{border:0;padding:10px 11px 2px;color:#d5dceb}
+.profile b{color:#e7ecf5;font-size:11px}
+.profile small{color:#697995;font-size:10px}
+.avatar{background:#203754;color:#dce7fa}
+.main{margin-left:256px;max-width:none;min-height:100vh;padding:0 36px 0 42px}
+.page-head{max-width:1100px;margin:0 auto;padding:34px 0 30px;align-items:center}
+.date-line{margin-bottom:5px;color:#72829d;font-size:12px;font-weight:500}
+.page-head h1{margin:0;font-size:31px;font-weight:800;color:#101c31;letter-spacing:-1.25px;line-height:1.2}
+.page-head .subhead{margin:9px 0 0;color:#73829a;font-size:14px}
+.text-button{color:#536b90;font-size:11px}
+.main>.input-panel,.metrics-grid,.workspace-grid,footer{max-width:1100px;margin-left:auto;margin-right:auto}
+.input-panel{padding:36px 40px;margin-bottom:30px;min-height:0}
+.hero-ready{position:relative;z-index:1;display:flex;align-items:center;gap:10px;margin-bottom:16px;color:#8797b1;font-size:10px;font-weight:700;letter-spacing:.08em}
+.ready-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,.1)}
+.input-panel>h2{position:relative;z-index:1;margin:0 0 7px;color:#fff;font-size:25px;font-weight:800;letter-spacing:-.75px;line-height:1.22}
+.hero-copy{position:relative;z-index:1;max-width:610px;margin:0 0 22px;color:#91a0b8;font-size:12px;line-height:1.7}
+.input-panel textarea{margin:0;min-height:94px;padding:13px 15px;background:#28354d;color:#f4f7fc;border-color:#3a4963;font-size:13px}
+.input-panel textarea::placeholder{color:#a0aec3}
+.input-footer{margin-top:8px}
+.input-tools{gap:11px}
+.upload-btn{padding:8px 12px;border-radius:7px;color:#a8b6ca;font-size:11px}
+.format-note,.char-count{font-size:10px}
+.sample-row{margin:11px 0 0;gap:6px;font-size:10px}
+.sample-row>span{margin-right:4px}
+.chip{padding:5px 8px;border-radius:14px;font-size:9px}
+.hero-actions{position:relative;z-index:1;display:flex;align-items:center;gap:12px;margin-top:15px}
+.primary-btn{width:auto;margin:0;padding:10px 17px;font-size:12px}
+.btn-symbol{font-size:17px;line-height:10px;margin-right:1px}
+.btn-arrow{display:none}
+.file-types{color:#71819a;font-size:10px}
+.input-panel .error-message{color:#fecaca}
+.metrics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:28px}
+.metric-card{min-height:105px;padding:19px 22px;background:#fff;border:1px solid #dce4f1;border-radius:12px;box-shadow:0 5px 20px rgba(22,34,56,.025)}
+.metric-featured{background:#162238;border-color:#243d66;color:#fff}
+.metric-label{margin-bottom:7px;color:#72819a;font-size:9px;font-weight:700;letter-spacing:.09em}
+.metric-featured .metric-label{color:#96a6c0}
+.metric-value{color:#132039;font-size:25px;font-weight:800;line-height:1.15;letter-spacing:-.8px}
+.metric-featured .metric-value{color:#fff}
+.metric-caption{margin-top:5px;color:#8593a8;font-size:10px}
+.metric-featured .metric-caption{color:#8191aa}
+.workspace-grid{grid-template-columns:minmax(280px,.72fr) minmax(420px,1.28fr);gap:16px;margin-bottom:0}
+.left-column{display:block}
+.right-column{gap:15px}
+.requirements-panel,.result-panel,.related-panel{padding:19px}
+.panel-title h2,.related-head h2{font-size:14px}
+footer{padding-top:15px;padding-bottom:23px;font-size:9px}
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:1000px){.main{padding-left:26px;padding-right:26px}.page-head,.main>.input-panel,.metrics-grid,.workspace-grid,footer{max-width:900px}.metrics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workspace-grid{grid-template-columns:1fr}.left-column{display:block}}
+@media(max-width:720px){.rail{width:58px;padding:18px 7px}.brand{padding:0;margin:0 0 29px}.brand-name{font-size:0}.brand-name:first-letter{font-size:16px}.brand-tagline,.rail-label,.rail-divider,.nav-item:not(.active),.rail-bottom{display:none}.nav-item.active{font-size:0;justify-content:center;padding:12px 4px}.nav-icon{font-size:18px}.main{margin-left:58px;padding:0 14px}.page-head{display:block;padding:25px 0 20px}.page-head h1{font-size:25px}.text-button{margin-top:12px}.input-panel{padding:23px 20px;margin-bottom:18px}.input-panel>h2{font-size:21px}.metrics-grid{gap:9px;margin-bottom:18px}.metric-card{min-height:94px;padding:14px}.metric-value{font-size:20px}.metric-label{font-size:8px}.metric-caption{font-size:9px}.workspace-grid{gap:12px}.sample-row>span{width:100%}.file-types{font-size:9px}.footer-right{display:block;float:none;margin-top:6px}}

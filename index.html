@@ -3,55 +3,98 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0d1829" />
-  <title>StandardLens — Procurement standards assistant</title>
+  <meta name="theme-color" content="#060c1d" />
+  <meta name="description" content="MAAनक AI helps procurement teams discover relevant Indian Standards and review source-linked candidates." />
+  <title>MAAनक AI — Indian Standards Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <aside class="rail">
-    <a class="brand" href="#" aria-label="StandardLens home"><span class="brand-mark">S<span>+</span></span><span class="brand-name">standard<span>lens</span></span></a>
+  <aside class="rail" aria-label="Main navigation">
+    <a class="brand" href="#dashboard" aria-label="MAAनक AI dashboard">
+      <span class="brand-name">MAAनक <span>AI</span></span>
+      <span class="brand-tagline">AI-Powered Indian Standards Intelligence</span>
+    </a>
     <div class="rail-label">WORKSPACE</div>
-    <button class="nav-item active"><span class="nav-icon">⌕</span> Standards finder</button>
-    <button class="nav-item" id="libraryNav"><span class="nav-icon">▤</span> Standards library <span class="nav-count">9</span></button>
-    <button class="nav-item" id="historyNav"><span class="nav-icon">◷</span> Recent analyses</button>
-    <div class="rail-bottom"><div class="rail-help"><span class="help-icon">i</span><div><b>Early access</b><small>Recommendations need expert review.</small></div></div><div class="profile"><div class="avatar">P</div><div><b>Procurement team</b><small>Demo workspace</small></div><span class="dots">···</span></div></div>
+    <button class="nav-item active" id="dashboardNav" type="button"><span class="nav-icon">▦</span> Dashboard</button>
+    <button class="nav-item" id="analyzeNav" type="button"><span class="nav-icon">⌕</span> Analyze Specification</button>
+    <button class="nav-item" id="recommendationsNav" type="button"><span class="nav-icon">★</span> Recommendations <span class="nav-count" id="recommendationNavCount">—</span></button>
+    <button class="nav-item" id="libraryNav" type="button"><span class="nav-icon">▣</span> Standards Library</button>
+    <button class="nav-item" id="relationshipsNav" type="button"><span class="nav-icon">⌘</span> Relationships</button>
+    <button class="nav-item future-nav" type="button" title="This section is not part of the current MVP"><span class="nav-icon">♥</span> Certification</button>
+    <button class="nav-item future-nav" type="button" title="This section is not part of the current MVP"><span class="nav-icon">▤</span> Reports</button>
+    <button class="nav-item future-nav" type="button" title="This section is not part of the current MVP"><span class="nav-icon">⚙</span> Settings</button>
+    <div class="rail-divider"></div>
+    <button class="nav-item future-nav" type="button" title="This section is not part of the current MVP"><span class="nav-icon">▤</span> Data Sources</button>
+    <button class="nav-item future-nav" id="historyNav" type="button" title="This section is not part of the current MVP"><span class="nav-icon">↻</span> Data Freshness</button>
+    <div class="rail-bottom">
+      <button class="nav-item future-nav help-nav" type="button" title="This section is not part of the current MVP"><span class="nav-icon">●</span> Help &amp; Documentation</button>
+      <div class="profile"><div class="avatar">A</div><div><b>Arjun Sharma</b><small>Procurement Officer</small></div></div>
+    </div>
   </aside>
-  <main class="main">
-    <header class="topbar"><div class="crumb">Workspace <span>/</span> <b>Standards finder</b></div><div class="top-actions"><span class="env"><i></i> DEMO DATA</span><button class="icon-button" title="Help">?</button></div></header>
-    <section class="page-head"><div><div class="eyebrow"><span class="spark">✳</span> PROCUREMENT STANDARDS DISCOVERY</div><h1>Find the right standards.</h1><p class="subhead">Turn a product requirement into a source-linked standards shortlist.</p></div><button class="text-button" id="howBtn">How recommendations work <span>↗</span></button></section>
-    <section class="workspace-grid">
+
+  <main class="main" id="dashboard">
+    <header class="page-head">
+      <div>
+        <div class="date-line">Wednesday, 30 September 2026</div>
+        <h1>Good morning, Arjun.</h1>
+        <p class="subhead">Analyze procurement specifications and find the standards that matter.</p>
+      </div>
+      <button class="text-button" id="howBtn" type="button">How recommendations work <span>↗</span></button>
+    </header>
+
+    <section class="panel input-panel" id="analyzeSection" aria-labelledby="heroTitle">
+      <div class="hero-ready"><span class="ready-dot"></span> READY TO ANALYZE</div>
+      <h2 id="heroTitle">Find the right Indian Standards<br>before you publish your tender.</h2>
+      <p class="hero-copy">Describe your procurement requirement. MAAनक AI ranks catalogue candidates and shows available source evidence for your review.</p>
+      <label class="visually-hidden" for="query">Describe your procurement requirement</label>
+      <textarea id="query" maxlength="5000" rows="3" placeholder="Describe your procurement requirement…&#10;e.g. Procurement of 1.1 kV PVC insulated copper electrical cables for industrial distribution…">PVC insulated copper electrical cable, 1.1 kV, suitable for industrial applications.</textarea>
+      <div class="input-footer">
+        <div class="input-tools">
+          <label class="upload-btn" for="fileInput"><span aria-hidden="true">◉</span> Upload Tender Text<input type="file" id="fileInput" accept=".txt,text/plain" hidden /></label>
+          <span class="format-note" id="fileLabel">Paste PDF/DOCX extracted text</span>
+        </div>
+        <span class="char-count" id="charCount">86 / 5,000</span>
+      </div>
+      <div class="sample-row"><span>Try an example</span><button class="chip" data-example="PVC insulated copper electrical cable, 1.1 kV, suitable for industrial applications." type="button">Electrical cable</button><button class="chip" data-example="Procurement of protective gloves for industrial workers, resistant to mechanical hazards." type="button">Safety gloves</button><button class="chip" data-example="Structural steel sections for a public building construction project." type="button">Structural steel</button></div>
+      <div class="hero-actions">
+        <button class="primary-btn" id="analyzeBtn" type="button"><span class="btn-symbol">⌕</span> Analyze Specification <span class="btn-arrow">→</span></button>
+        <span class="file-types">TXT upload · PDF/DOCX text can be pasted</span>
+      </div>
+      <div class="error-message" id="errorMessage" role="alert"></div>
+    </section>
+
+    <section class="metrics-grid" aria-label="Workspace summary">
+      <article class="metric-card metric-featured"><div class="metric-label">STANDARDS INDEXED</div><div class="metric-value" id="catalogMetric">Loading…</div><div class="metric-caption">Records in the loaded catalogue</div></article>
+      <article class="metric-card"><div class="metric-label">STANDARDS ANALYZED</div><div class="metric-value">Not tracked</div><div class="metric-caption">Analysis history is not saved in this MVP</div></article>
+      <article class="metric-card"><div class="metric-label">RECOMMENDATIONS</div><div class="metric-value" id="candidateMetric">—</div><div class="metric-caption">Candidates ranked for this description</div></article>
+      <article class="metric-card"><div class="metric-label">PENDING REVIEWS</div><div class="metric-value">Not tracked</div><div class="metric-caption">Expert confirmation is required</div></article>
+    </section>
+
+    <section class="workspace-grid" aria-label="Analysis results">
       <div class="left-column">
-        <section class="panel input-panel">
-          <div class="panel-title"><div class="step">01</div><div><h2>Describe what you're buying</h2><p>Paste a product description or tender requirement.</p></div></div>
-          <textarea id="query" placeholder="Example: PVC insulated copper cable, 1.1 kV, for industrial applications…" rows="5">PVC insulated copper electrical cable, 1.1 kV, suitable for industrial applications.</textarea>
-          <div class="input-footer"><div class="input-tools"><label class="upload-btn" for="fileInput">＋ <span>Upload text file</span><input type="file" id="fileInput" accept=".txt" hidden /></label><span class="format-note" id="fileLabel">Paste extracted PDF/DOCX text</span></div><span class="char-count" id="charCount">86 / 5,000</span></div>
-          <div class="sample-row"><span>Try an example</span><button class="chip" data-example="PVC insulated copper electrical cable, 1.1 kV, suitable for industrial applications.">Electrical cable</button><button class="chip" data-example="Procurement of protective gloves for industrial workers, resistant to mechanical hazards.">Safety gloves</button><button class="chip" data-example="Structural steel sections for a public building construction project.">Structural steel</button></div>
-          <button class="primary-btn" id="analyzeBtn"><span class="btn-symbol">✳</span> Analyze requirements <span class="btn-arrow">→</span></button>
-          <div class="error-message" id="errorMessage"></div>
-        </section>
         <section class="panel requirements-panel" id="requirementsPanel">
-          <div class="panel-title"><div class="step">02</div><div><h2>Extracted requirements</h2><p>Review the details used to find relevant standards.</p></div><button class="edit-link" id="editQuery">Edit input</button></div>
+          <div class="panel-title"><div class="step">01</div><div><h2>Extracted requirements</h2><p>Review the details used to find relevant standards.</p></div><button class="edit-link" id="editQuery" type="button">Edit input</button></div>
           <div class="requirements-grid" id="requirements"></div>
           <div class="extraction-note"><span>✳</span> Extracted from your description using demo parsing rules.</div>
         </section>
       </div>
       <div class="right-column">
         <section class="panel result-panel" id="resultsPanel">
-          <div class="panel-title results-heading"><div><div class="step">03</div></div><div><h2>Recommended standards</h2><p id="resultSub">Based on your procurement requirements</p></div><button class="export-btn" id="exportBtn" title="Download results as CSV">⇩ <span>Export</span></button></div>
-          <div class="result-summary"><span class="status-dot"></span><span id="resultCount">3 recommendations</span><span class="summary-sep">·</span><span>Sorted by relevance</span></div>
+          <div class="panel-title results-heading"><div><div class="step">02</div></div><div><h2>Recommended standards</h2><p id="resultSub">Based on your procurement requirements</p></div><button class="export-btn" id="exportBtn" title="Download results as CSV" type="button">⇩ <span>Export</span></button></div>
+          <div class="result-summary"><span class="status-dot"></span><span id="resultCount">Loading catalogue…</span><span class="summary-sep">·</span><span>Sorted by relevance</span></div>
           <div class="results-list" id="results"></div>
-          <div class="source-note"><span>ⓘ</span><span id="sourceNote"><b>Demo records only.</b> Standard identifiers and metadata below are illustrative placeholders, not official BIS recommendations. Load a reviewed BIS catalogue export to replace these fixtures.</span></div>
+          <div class="source-note"><span>ⓘ</span><span id="sourceNote"><b>Loading catalogue.</b> Candidates are ranked from available metadata. Review source and applicability before procurement use.</span></div>
         </section>
-        <section class="panel related-panel"><div class="related-head"><div><div class="mini-label">RELATIONSHIP MAP</div><h2>Related standards</h2></div><button class="view-link" id="viewAll">View all <span>→</span></button></div><div class="relationship-list" id="relationships"></div><div class="relation-foot">Relationships are shown only when present in the knowledge base.</div></section>
+        <section class="panel related-panel" id="relationshipsPanel"><div class="related-head"><div><div class="mini-label">RELATIONSHIP MAP</div><h2>Related standards</h2></div><button class="view-link" id="viewAll" type="button">View all <span>→</span></button></div><div class="relationship-list" id="relationships"></div><div class="relation-foot">Relationships are shown only when present in the knowledge base.</div></section>
       </div>
     </section>
-    <footer>StandardLens <span>·</span> Procurement standards assistant <span class="footer-right">Prototype v0.1 <span>·</span> <span id="footerStatus">BIS data not connected</span></span></footer>
+    <footer>MAAनक AI <span>·</span> Indian Standards Intelligence <span class="footer-right">Procurement standards assistant <span>·</span> <span id="footerStatus">Loading catalogue</span></span></footer>
   </main>
-  <div class="toast" id="toast"></div>
-  <dialog id="infoDialog"><div class="dialog-head"><div><div class="mini-label">ABOUT THIS MVP</div><h2>How recommendations work</h2></div><button class="close-dialog" id="closeDialog">×</button></div><p>This prototype extracts product attributes, ranks records by keyword overlap, and displays relationships supplied in the dataset. It does not yet use semantic AI retrieval.</p><ol><li>Describe a product or paste tender text.</li><li>Review extracted requirements.</li><li>Inspect ranked candidates, source links, and recorded relationships.</li></ol><p class="dialog-warning">Before real procurement use, load verified BIS metadata and references, add authoritative version and QCO sources, and have domain experts validate results. This is not official standards advice.</p></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog id="infoDialog"><div class="dialog-head"><div><div class="mini-label">ABOUT THIS MVP</div><h2>How recommendations work</h2></div><button class="close-dialog" id="closeDialog" type="button" aria-label="Close">×</button></div><p>This prototype extracts product attributes, ranks records by keyword overlap, and displays relationships supplied in the dataset. It does not yet use semantic AI retrieval.</p><ol><li>Describe a product or paste tender text.</li><li>Review extracted requirements.</li><li>Inspect ranked candidates, source links, and recorded relationships.</li></ol><p class="dialog-warning">Before real procurement use, load verified BIS metadata and references, add authoritative version and QCO sources, and have domain experts validate results. This is not official standards advice.</p></dialog>
   <script src="search.js"></script>
   <script src="app.js"></script>
 </body>
