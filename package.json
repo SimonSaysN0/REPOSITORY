@@ -1,0 +1,13 @@
+{
+  "name": "standardlens",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Static BIS standards finder (browser) plus an offline Python data pipeline.",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "build": "echo \"static site: nothing to build\"",
+    "index": "python scripts/build_search_index.py",
+    "index:crawl": "python scripts/merge_crawl_data.py && python scripts/build_search_index.py --standards-csv data/bis_standards_enriched.csv --relationships-csv data/standard_relationships_enriched.csv",
+    "test": "node tests/search_core.test.cjs && node tests/deploy_static.test.cjs"
+  }
+}

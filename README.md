@@ -1,47 +1,57 @@
-# StandardLens MVP
+# StandardLens
 
-A small browser prototype for the Indian Standards procurement recommendation workflow. It demonstrates requirement extraction, candidate ranking, match explanations, recorded relationships, and CSV export.
+Static browser MVP for discovering candidate Indian Standards from procurement descriptions. It searches a compact prebuilt catalogue index, shows source metadata and identifier-family relationships, and exports results to CSV. Search is lexical BM25-style retrieval, not semantic AI or official standards advice.
+
+The current index covers 23,866 BIS catalogue records. The source export has titles, identifiers, standard types, publication dates, equivalence, and year information; it has no scope, status, amendment, certification, or referred-standard data. The UI shows these gaps instead of inventing values.
 
 ## Run locally
 
-Open `index.html` in a modern browser for demo fixtures. To load an imported catalogue, serve this directory so the browser can fetch its JSON:
-
 ```powershell
-python -m http.server 8000
+npm run dev
 ```
 
-Open `http://localhost:8000`.
+Open `http://localhost:8000`. Python is used only to serve the static files locally. You can also use `python -m http.server 8000`.
 
-## BIS catalogue export workflow
+## Search index workflow
 
-The importer is export-first. Check whether the BIS portal's Export to Excel/CSV provides suitable metadata before considering browser automation. No undocumented endpoint is assumed. This project does not download full standard documents.
+The source CSV and Python index builder stay out of the deployed site. If you update the source data, rebuild the canonical data, provenance report, and browser index, then commit the changed deployable index artifacts:
 
-1. Export permitted catalogue metadata from BIS to CSV or XLSX.
-2. Run this from the project directory and pass the actual catalogue URL you used:
+```powershell
+python scripts/prepare_bis_data.py .\new-bis-export.xlsx --source-url "https://standards.bis.gov.in/website/published-standards/published-standards-list?selectedType=7&totalRow=1" --date-checked YYYY-MM-DD
+npm run index
+npm test
+```
 
-   ```powershell
-   python scripts/prepare_bis_data.py .\your-bis-export.xlsx --source-url "https://standards.bis.gov.in/website/published-standards/published-standards-list" --date-checked 2026-09-29
-   ```
+After a reviewed crawler batch, merge its non-empty metadata fields and edges into the full catalogue, then rebuild the index:
 
-3. The importer writes `data/bis_standards.csv`, `data/standard_relationships.csv`, and `data/standards.json`. It recognizes common column names in CSV or XLSX, preserves missing values as blank, derives a year only when it appears in the standard number, extracts recognizable standard identifiers from a referred-standards field, flags duplicate/incomplete rows, and stamps the check date. To include a separate manually reviewed relationships CSV, add `--relationships .\my-relationships.csv`.
-4. Run the local server and reload. The UI loads non-empty `data/standards.json` in place of the fixtures and displays source links. Results remain keyword-overlap candidates for human review.
+```powershell
+npm run index:crawl
+npm test
+```
 
-The starter schemas are in `data/*.template.csv`. The importer cannot infer official product categories, scopes, relationship types (for example, whether a referred standard is normative or a test method), or whether certification is legally mandatory. Populate those only from authorized, authoritative evidence. It does not crawl detail pages. Inspect the export and a sample detail record before deciding whether automation is appropriate.
+`npm run index` reads `data/bis_standards.csv` and `data/standard_relationships.csv`, writes `data/search_index.json`, its gzip sibling, and `data/provenance.json`. The browser prefers the gzip index and falls back to the plain JSON index or catalogue JSON. Search index assets are public static files; do not include restricted full standard text.
 
-The attached `File_Published_Standards_List_2026-09-29_011114.xlsx` export has been imported. It yielded 23,866 records with standard number, title, type, degree of equivalence, and publication date where present. This export did not include scopes, department, committee, classifications, status, amendments, certification, or referred-standard links; those fields remain blank. Its `IS 12345:2026`-style year is carried into `edition_year`. The frontend loads `data/standards.json` when served over HTTP.
+## Vercel deployment
 
-## Automated detail-crawl architecture
+This is a static site; the Python importer, crawler, and index builder do not run on Vercel. The repository `vercel.json` selects the `Other` preset, skips a build, serves the project root, sets security headers, and caches `/data` assets. `.vercelignore` excludes source CSVs, large raw JSON, crawler databases/logs, tests, and scratch files while retaining the browser index.
 
-An incremental metadata-only crawler scaffold now lives in [bis_scraper](bis_scraper/README.md). It writes to SQLite with first-seen/last-checked/last-changed dates, a change log, and referred-standard edges; it exports CSV and JSON for the MVP UI. Each run is capped at 10 detail records by default, applies request spacing, checks `robots.txt`, and does not fetch standard PDFs. It does not overwrite the exported catalogue seed.
+1. Import this repository into Vercel.
+2. Set **Root Directory** to `.` and **Framework Preset** to **Other**. Leave **Build Command** empty and use the repository root as the output directory. Those are the documented settings for a static project with no build step.
+3. Deploy. `index.html`, `app.js`, `search.js`, `styles.css`, and `data/search_index.json.gz` must be present in the deployment.
 
-The BIS portal's actual detail-link selector, pagination, and rendered response have not yet been verified, so the crawler intentionally requires a configured selector. First run its listing inspection command and inspect the current DOM. Do not increase the record cap or schedule recurring runs until the parser, access rules, and licensing have been reviewed. The UI prefers crawl JSON when it exists and otherwise uses the imported XLSX catalogue JSON.
+For local checks, run:
 
-## Current limitations
+```powershell
+npm test
+node --check app.js
+node --check search.js
+python -m compileall -q scripts standardlens bis_scraper
+```
 
-`DEMO-*` rows in `app.js` are fictional placeholders, not BIS standards. Matching uses keyword overlap and recorded links, not semantic AI retrieval. BIS certification/QCO validation, expert-reviewed applicability, persistent history, backend embeddings, and PDF/DOCX extraction are not implemented. TXT upload works; paste extracted PDF/DOCX text into the input.
+The smoke tests verify that the browser index is reachable and decodes, that search returns plausible candidates, and that deployment-ignored files stay out of the static artifact.
 
-## Dataset to provide
+## BIS metadata acquisition
 
-For the first real pilot, provide the BIS catalogue CSV export (for one domain or the full permitted catalogue) and the exact page URL used to export it. Also provide any authorized detail metadata and relationships as `source_is,target_is,relationship,source_url`, plus 5–10 tender descriptions with expert-reviewed expected standards. Certification/QCO data should include product, order/scheme, effective date, official source, and verification date.
+The attached XLSX export is imported to CSV locally. An incremental metadata-only crawler is in `bis_scraper/`; it has a verified detail-link selector from the rendered catalogue output, but the detail-field parser and list pagination still need validation. Start with a small capped run only after reviewing BIS access/licensing terms. It checks `robots.txt`, rate-limits requests, tracks changes in SQLite, and never downloads standard PDFs. `npm run index:crawl` merges reviewed crawl exports with the full catalogue before the static index is redeployed. The crawler is not a Vercel function.
 
-Do not add restricted full-text standards to this prototype. Follow BIS access and licensing terms for metadata and derived content.
+Do not label a referred standard as a normative reference, test method, or safety standard unless the source establishes that relationship. Certification/QCO recommendations and current-status claims need their own authoritative, dated source.

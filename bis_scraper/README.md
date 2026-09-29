@@ -30,26 +30,25 @@ python -m bis_scraper.scraper --inspect-listing --render-browser
 
 This renders only the listing page in headless Chrome, then reports visible DOM links. It still does not crawl standards detail pages.
 
-The BIS list/detail selectors have not been guessed. The inspection output and page DOM must be reviewed to identify the actual detail-link CSS selector and verify that the details are available in the response. If the listing is JavaScript-rendered, inspect the browser's Network panel and use a documented/authorized endpoint or add a reviewed browser adapter; do not invent an API URL.
+The rendered catalogue inspection confirmed detail links use `/website/standard-details?encryptedId=…`; the default selector is `a[href*="/standard-details?encryptedId="]`. It also confirmed the catalogue list is JavaScript-rendered, so use `--render-browser` for inspection and crawl. The encrypted query value is passed through as an opaque URL; the scraper does not decode or alter it.
 
 After confirming the selector, set it in PowerShell and run a small batch:
 
 ```powershell
-$env:BIS_DETAIL_LINK_SELECTOR = 'a.REPLACE_WITH_VERIFIED_SELECTOR'
-python -m bis_scraper.scraper --max-standards 10 --confirm-terms-reviewed
+python -m bis_scraper.scraper --max-standards 10 --render-browser --confirm-terms-reviewed
 ```
 
-The placeholder selector must be replaced with the selector observed on BIS. The explicit confirmation flag is an operator attestation that applicable BIS terms/licensing have been reviewed and this metadata collection is authorized. The crawler refuses a missing selector, a non-BIS host, and robots-disallowed pages. The per-run cap defaults to 10; increase it only after validating the parser and request policy.
+The explicit confirmation flag is an operator attestation that applicable BIS terms/licensing have been reviewed and this metadata collection is authorized. The crawler refuses a non-BIS host and robots-disallowed pages. The per-run cap defaults to 10; increase it only after validating detail parsing and request policy.
 
 Outputs:
 
 - `data/bis_metadata.sqlite3` — current metadata, referred edges, crawl timestamps, and change log
 - `data/bis_crawl/standards.csv` and `relationships.csv` — reviewable exports
-- `data/bis_crawl/standards.json` — loaded by the app ahead of the catalogue-export JSON
+- `data/bis_crawl/standards.json` — crawler staging data; merge the CSV exports with `npm run index:crawl` before the deployed search index changes
 - `logs/bis_scraper.log` — run log
 
 ## Boundaries and next adapter work
 
-This is an incremental crawler framework, not a verified BIS selector implementation. It currently handles one listing page and uses static HTTP. The public detail URL structure, pagination, JavaScript behavior, robots result, exact labels, and BIS reuse terms need to be confirmed from the live portal before a crawl. If any field is absent or the page layout changes, missing values are preserved during updates. An empty/absent reference section does not erase stored edges. Referred links are labeled `referred`; the crawler does not guess normative/test/safety relationship types.
+This is an incremental crawler, not a full-catalogue crawler yet. It currently handles one listing page and needs browser mode for the JavaScript-rendered catalogue. Pagination and exact detail-field extraction still need validation on a small sample before expanding. If any field is absent or the page layout changes, missing values are preserved during updates. An empty/absent reference section does not erase stored edges. Referred links are labeled `referred`; the crawler does not guess normative/test/safety relationship types. A partial crawl is not the active search catalog until it is merged with the full catalogue and the browser index is rebuilt.
 
 Start with 10 records, inspect parser output, then expand deliberately. Add a scheduled weekly/monthly invocation only after the list pagination and rate policy are verified. The current app uses keyword-overlap candidate ranking; vector embeddings, reranking, PostgreSQL, and automatic scheduler integration are later architecture stages.

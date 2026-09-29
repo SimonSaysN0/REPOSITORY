@@ -21,13 +21,13 @@
   </aside>
   <main class="main">
     <header class="topbar"><div class="crumb">Workspace <span>/</span> <b>Standards finder</b></div><div class="top-actions"><span class="env"><i></i> DEMO DATA</span><button class="icon-button" title="Help">?</button></div></header>
-    <section class="page-head"><div><div class="eyebrow"><span class="spark">✳</span> AI-ASSISTED PROCUREMENT</div><h1>Find the right standards.</h1><p class="subhead">Turn a product requirement into a clear, evidence-backed standards shortlist.</p></div><button class="text-button" id="howBtn">How recommendations work <span>↗</span></button></section>
+    <section class="page-head"><div><div class="eyebrow"><span class="spark">✳</span> PROCUREMENT STANDARDS DISCOVERY</div><h1>Find the right standards.</h1><p class="subhead">Turn a product requirement into a source-linked standards shortlist.</p></div><button class="text-button" id="howBtn">How recommendations work <span>↗</span></button></section>
     <section class="workspace-grid">
       <div class="left-column">
         <section class="panel input-panel">
           <div class="panel-title"><div class="step">01</div><div><h2>Describe what you're buying</h2><p>Paste a product description or tender requirement.</p></div></div>
           <textarea id="query" placeholder="Example: PVC insulated copper cable, 1.1 kV, for industrial applications…" rows="5">PVC insulated copper electrical cable, 1.1 kV, suitable for industrial applications.</textarea>
-          <div class="input-footer"><div class="input-tools"><label class="upload-btn" for="fileInput">＋ <span>Upload tender</span><input type="file" id="fileInput" accept=".txt,.pdf,.docx" hidden /></label><span class="format-note" id="fileLabel">PDF, DOCX or TXT</span></div><span class="char-count" id="charCount">86 / 5,000</span></div>
+          <div class="input-footer"><div class="input-tools"><label class="upload-btn" for="fileInput">＋ <span>Upload text file</span><input type="file" id="fileInput" accept=".txt" hidden /></label><span class="format-note" id="fileLabel">Paste extracted PDF/DOCX text</span></div><span class="char-count" id="charCount">86 / 5,000</span></div>
           <div class="sample-row"><span>Try an example</span><button class="chip" data-example="PVC insulated copper electrical cable, 1.1 kV, suitable for industrial applications.">Electrical cable</button><button class="chip" data-example="Procurement of protective gloves for industrial workers, resistant to mechanical hazards.">Safety gloves</button><button class="chip" data-example="Structural steel sections for a public building construction project.">Structural steel</button></div>
           <button class="primary-btn" id="analyzeBtn"><span class="btn-symbol">✳</span> Analyze requirements <span class="btn-arrow">→</span></button>
           <div class="error-message" id="errorMessage"></div>
@@ -48,10 +48,11 @@
         <section class="panel related-panel"><div class="related-head"><div><div class="mini-label">RELATIONSHIP MAP</div><h2>Related standards</h2></div><button class="view-link" id="viewAll">View all <span>→</span></button></div><div class="relationship-list" id="relationships"></div><div class="relation-foot">Relationships are shown only when present in the knowledge base.</div></section>
       </div>
     </section>
-    <footer>StandardLens <span>·</span> Procurement standards assistant <span class="footer-right">Prototype v0.1 <span>·</span> BIS data not connected</span></footer>
+    <footer>StandardLens <span>·</span> Procurement standards assistant <span class="footer-right">Prototype v0.1 <span>·</span> <span id="footerStatus">BIS data not connected</span></span></footer>
   </main>
   <div class="toast" id="toast"></div>
   <dialog id="infoDialog"><div class="dialog-head"><div><div class="mini-label">ABOUT THIS MVP</div><h2>How recommendations work</h2></div><button class="close-dialog" id="closeDialog">×</button></div><p>This prototype extracts product attributes, ranks records by keyword overlap, and displays relationships supplied in the dataset. It does not yet use semantic AI retrieval.</p><ol><li>Describe a product or paste tender text.</li><li>Review extracted requirements.</li><li>Inspect ranked candidates, source links, and recorded relationships.</li></ol><p class="dialog-warning">Before real procurement use, load verified BIS metadata and references, add authoritative version and QCO sources, and have domain experts validate results. This is not official standards advice.</p></dialog>
+  <script src="search.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

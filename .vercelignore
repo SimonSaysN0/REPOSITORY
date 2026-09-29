@@ -1,0 +1,24 @@
+# Deployment hygiene: only the browser-facing site is uploaded.
+# The Python packages, the reviewed CSV source and the pretty-printed catalogue
+# dump are offline tooling / inputs the browser never requests.
+.gitignore
+.vercelignore
+README.md
+requirements*.txt
+__pycache__/
+*.py[cod]
+logs/
+data/bis_crawl/
+data/*.db
+data/*.sqlite*
+tests/
+scripts/
+standardlens/
+bis_scraper/
+*.py
+_tmp_*
+_probe*
+_inspect*
+_fix_*
+data/*.csv
+data/standards.json
