@@ -1,0 +1,209 @@
+{
+  "schema": 1,
+  "generated_at": "2026-09-28T21:57:16+00:00",
+  "pipeline": "csv_rebuild 0.2.0",
+  "input": {
+    "name": "bis_standards.csv",
+    "sha256": "bbf891dcc82473254b302e144b9d3465e8fcf0448edf9739524fa478f9181073",
+    "bytes": 6497578
+  },
+  "source_url": "",
+  "date_checked": "2026-09-29",
+  "counts": {
+    "records": 23866,
+    "relationships": 0,
+    "relationship_kinds": {}
+  },
+  "coverage": {
+    "is_number": {
+      "filled": 23866,
+      "total": 23866,
+      "pct": 100.0
+    },
+    "title": {
+      "filled": 23866,
+      "total": 23866,
+      "pct": 100.0
+    },
+    "edition_year": {
+      "filled": 23824,
+      "total": 23866,
+      "pct": 99.8
+    },
+    "publication_date": {
+      "filled": 23484,
+      "total": 23866,
+      "pct": 98.4
+    },
+    "degree_of_equivalence": {
+      "filled": 23361,
+      "total": 23866,
+      "pct": 97.9
+    },
+    "scope": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "department": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "technical_committee": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "type_of_standard": {
+      "filled": 23759,
+      "total": 23866,
+      "pct": 99.6
+    },
+    "sector": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "product_category": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "status": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "number_of_revisions": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "number_of_amendments": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "amendment_year": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "reaffirmation_year": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "certification": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "referred_standards": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "superseding_standard": {
+      "filled": 0,
+      "total": 23866,
+      "pct": 0.0
+    },
+    "source_url": {
+      "filled": 23866,
+      "total": 23866,
+      "pct": 100.0
+    },
+    "date_checked": {
+      "filled": 23866,
+      "total": 23866,
+      "pct": 100.0
+    }
+  },
+  "type_of_standard": [
+    {
+      "value": "Product Specification",
+      "count": 10864
+    },
+    {
+      "value": "Methods of Tests",
+      "count": 5272
+    },
+    {
+      "value": "Code of Practice",
+      "count": 3166
+    },
+    {
+      "value": "Others",
+      "count": 1876
+    },
+    {
+      "value": "Terminology",
+      "count": 883
+    },
+    {
+      "value": "Dimensions",
+      "count": 661
+    },
+    {
+      "value": "Safety Standard",
+      "count": 417
+    },
+    {
+      "value": "System Standard",
+      "count": 248
+    },
+    {
+      "value": "Service Specification",
+      "count": 226
+    },
+    {
+      "value": "Process Specification",
+      "count": 146
+    },
+    {
+      "value": "-",
+      "count": 107
+    }
+  ],
+  "degree_of_equivalence": [
+    {
+      "value": "Indigenous",
+      "count": 13011
+    },
+    {
+      "value": "Identical under dual numbering",
+      "count": 6266
+    },
+    {
+      "value": "Identical under single numbering",
+      "count": 2653
+    },
+    {
+      "value": "Modified/Technically Equivalent",
+      "count": 807
+    },
+    {
+      "value": "Not Equivalent",
+      "count": 624
+    },
+    {
+      "value": "-",
+      "count": 505
+    }
+  ],
+  "edition_year_span": {
+    "min": 1950,
+    "max": 2026,
+    "count": 23824
+  },
+  "families": {
+    "groups": 1933,
+    "members": 8760
+  },
+  "notes": [
+    "Rebuilt from the tracked reviewed CSV; the original BIS export is not stored in this repository.",
+    "Fields with 0% coverage were absent from the source export, not verified as empty by BIS."
+  ]
+}
